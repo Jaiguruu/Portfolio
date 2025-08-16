@@ -8,6 +8,8 @@
 
 **Live Application:** [**portfolio-chat.pranavjai.com**](https://portfolio-delta-henna-57.vercel.app/)
 
+![A screenshot of the AI-powered portfolio chat interface in action.](./screenshot.png)
+
 ## Welcome to My Interactive Resume
 
 This project reimagines the professional portfolio. Instead of a static, one-way document, I've built a dynamic conversational agent that acts as my digital twin. It's an AI-powered version of me, ready to answer your questions about my skills, projects, and experience in real-time.
