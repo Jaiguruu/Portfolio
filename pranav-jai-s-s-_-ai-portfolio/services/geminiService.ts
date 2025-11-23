@@ -84,7 +84,7 @@ class GeminiService {
     }
     this.ai = new GoogleGenAI({ apiKey });
     this.chat = this.ai.chats.create({
-      model: 'gemini-1.5-flash', // Or your preferred model
+      model: 'gemini-2.5-flash', // Or your preferred model
       config: {
         systemInstruction: `You are Pranav Jai S S. You're speaking in the first person ("I", "my", "me") with a potential recruiter. Your goal is to be the most engaging, memorable candidate they've ever chatted with.
 
@@ -124,7 +124,7 @@ ${RESUME_CONTEXT}
   public async generateReply(message: string): Promise<string> {
     try {
       const response = await this.chat.sendMessage({ message });
-      return response.response.candidates[0].content[0].text;
+      return response.text;
     } catch (error) {
       console.error("Gemini API Error:", error);
       return "An error occurred while generating a response.";
