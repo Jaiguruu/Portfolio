@@ -145,7 +145,7 @@ ${RESUME_CONTEXT}
       return result.response.text();
     } catch (error) {
       console.error("Gemini API Error:", error);
-      return "An error occurred while generating a response.";
+      return "An error occurred while generating a response do something.";
     }
   }
 }
