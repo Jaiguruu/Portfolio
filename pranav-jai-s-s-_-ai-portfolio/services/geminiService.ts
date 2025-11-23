@@ -124,7 +124,7 @@ ${RESUME_CONTEXT}
   public async generateReply(message: string): Promise<string> {
     try {
       const response = await this.chat.sendMessage({ message });
-      return response.text;
+      return response.response.candidates[0].content[0].text;
     } catch (error) {
       console.error("Gemini API Error:", error);
       return "An error occurred while generating a response.";
