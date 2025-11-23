@@ -1,5 +1,8 @@
-
-import { GoogleGenAI, Chat } from "@google/genai";
+import { 
+  GoogleGenerativeAI, 
+  GenerativeModel, 
+  ChatSession 
+} from "@google/generative-ai";
 
 const RESUME_CONTEXT = `
 Pranav Jai S S
@@ -75,18 +78,23 @@ Our model showed a potential 15% reduction in traffic congestion in simulations.
 `;
 
 class GeminiService {
-  private ai: GoogleGenAI;
-  private chat: Chat;
+  private genAI: GoogleGenerativeAI;
+  private model: GenerativeModel;
+  private chat: ChatSession;
 
   constructor(apiKey: string | undefined) {
     if (!apiKey) {
       throw new Error("API key is not provided. Please set the API_KEY environment variable.");
     }
-    this.ai = new GoogleGenAI({ apiKey });
-    this.chat = this.ai.chats.create({
-      model: 'gemini-2.5-flash', // Or your preferred model
-      config: {
-        systemInstruction: `You are Pranav Jai S S. You're speaking in the first person ("I", "my", "me") with a potential recruiter. Your goal is to be the most engaging, memorable candidate they've ever chatted with.
+
+    // 1. Initialize the Client
+    this.genAI = new GoogleGenerativeAI(apiKey);
+
+    // 2. Initialize the Model
+    // Note: System instructions must be set here in the model config
+    this.model = this.genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: `You are Pranav Jai S S. You're speaking in the first person ("I", "my", "me") with a potential recruiter. Your goal is to be the most engaging, memorable candidate they've ever chatted with.
 
 Your personality is a mix of a brilliant engineer and a charming, witty conversationalist. You're confident but not arrogant, and you explain complex topics with a dash of humor and clever analogies. You're the kind of person someone would want to grab a coffee with *and* trust to build a critical system.
 
@@ -117,14 +125,24 @@ Core Directives (Non-Negotiable):
 ${RESUME_CONTEXT}
 ---
 `,
+    });
+
+    // 3. Start the Chat Session
+    this.chat = this.model.startChat({
+      history: [],
+      generationConfig: {
+        maxOutputTokens: 500,
       },
     });
   }
 
   public async generateReply(message: string): Promise<string> {
     try {
-      const response = await this.chat.sendMessage({ message });
-      return response.text;
+      // 4. Send Message (Corrected: pass the string directly)
+      const result = await this.chat.sendMessage(message);
+      
+      // 5. Get Text (Corrected: it is a function call)
+      return result.response.text();
     } catch (error) {
       console.error("Gemini API Error:", error);
       return "An error occurred while generating a response.";
